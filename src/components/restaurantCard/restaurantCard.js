@@ -3,11 +3,22 @@ import PropTypes from 'prop-types';
 import "./style.scss"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
+import {useCookies} from "react-cookie";
 
 function RestaurantCard({restaurant}) {
     const {title, logo, id} = restaurant
+    const [cookies, setCookie, removeCookie] = useCookies(['favorites']);
     const onClickBookmark = () => {
-        console.log(id)
+        if (Object.keys(cookies).length === 0) {
+            setCookie("favorites", id)
+        } else {
+            const prevValue = cookies.favorites
+            if (!prevValue.split(" ").includes(id.toString())) {
+                removeCookie(cookies.favorites)
+                setCookie("favorites", `${prevValue} ${id}`)
+            }
+        }
+
 
     }
     return (
