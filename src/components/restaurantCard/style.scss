@@ -1,4 +1,4 @@
-.restaurant-card{
+.restaurant-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,9 +6,14 @@
   border: 1px solid grey;
   border-radius: 5px;
   padding: 10px;
-  &--image{
+
+  &--image {
     width: 150px;
     aspect-ratio: 1/1;
     object-fit: cover;
+  }
+
+  &--bookmark {
+    all: unset;
   }
 }
