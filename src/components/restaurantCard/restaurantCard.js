@@ -5,17 +5,25 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
 import {useCookies} from "react-cookie";
 
-function RestaurantCard({restaurant}) {
+function RestaurantCard({restaurant, setCookieChange}) {
     const {title, logo, id} = restaurant
     const [cookies, setCookie, removeCookie] = useCookies(['favorites']);
     const onClickBookmark = () => {
         if (Object.keys(cookies).length === 0) {
             setCookie("favorites", id)
+            setCookieChange(true)
         } else {
-            const prevValue = cookies.favorites
-            if (!prevValue.split(" ").includes(id.toString())) {
+            const prevValue = cookies.favorites.split(" ")
+            if (!prevValue.includes(id.toString())) {
                 removeCookie(cookies.favorites)
                 setCookie("favorites", `${prevValue} ${id}`)
+                setCookieChange(true)
+            } else {
+                removeCookie(cookies.favorites)
+                const cookieValue = prevValue.filter((item) =>
+                    item !== id.toString()
+                ).join(" ")
+                setCookie("favorites", cookieValue)
             }
         }
 
@@ -39,6 +47,7 @@ RestaurantCard.propTypes = {
         PropTypes.number,
         PropTypes.object,
     ]).isRequired,
+    setCookieChange: PropTypes.func.isRequired
 
 };
 
